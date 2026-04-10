@@ -1,4 +1,4 @@
-.fondo-modal {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +12,7 @@
   backdrop-filter: blur(4px);
 }
 
-.contenido-modal {
+.modal-content {
   background: #1a1a1a;
   border-radius: 12px;
   padding: 24px;
@@ -23,15 +23,15 @@
   border: 1px solid #333;
 }
 
-.contenido-modal h2 {
+.modal-content h2 {
   color: #fff;
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-weight: 500;
 }
 
-.contenido-modal input,
-.contenido-modal select {
+.modal-content input,
+.modal-content select {
   width: 100%;
   padding: 10px 12px;
   margin-bottom: 16px;
@@ -44,24 +44,24 @@
   box-sizing: border-box;
 }
 
-.contenido-modal input:focus,
-.contenido-modal select:focus {
+.modal-content input:focus,
+.modal-content select:focus {
   outline: none;
   border-color: #555;
 }
 
-.contenido-modal input::placeholder {
+.modal-content input::placeholder {
   color: #666;
 }
 
-.contenido-modal label {
+.modal-content label {
   color: #ccc;
   font-size: 13px;
   margin-bottom: 4px;
   display: block;
 }
 
-.cerrar-modal {
+.modal-close {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -73,18 +73,18 @@
   transition: color 0.2s;
 }
 
-.cerrar-modal:hover {
+.modal-close:hover {
   color: #fff;
 }
 
-.botones-modal {
+.modal-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
   margin-top: 20px;
 }
 
-.botones-modal button {
+.modal-buttons button {
   padding: 8px 20px;
   border-radius: 6px;
   font-size: 14px;
@@ -94,25 +94,25 @@
   border: none;
 }
 
-.botones-modal button[type="button"] {
+.modal-buttons button[type="button"] {
   background: #2a2a2a;
   color: #ccc;
   border: 1px solid #3a3a3a;
 }
 
-.botones-modal button[type="button"]:hover {
+.modal-buttons button[type="button"]:hover {
   background: #333;
   color: #fff;
   border-color: #4a4a4a;
 }
 
-.botones-modal button[type="submit"] {
+.modal-buttons button[type="submit"] {
   background: #3a3a3a;
   color: #fff;
   border: 1px solid #4a4a4a;
 }
 
-.botones-modal button[type="submit"]:hover {
+.modal-buttons button[type="submit"]:hover {
   background: #4a4a4a;
   border-color: #5a5a5a;
 }

@@ -1,53 +1,49 @@
 import { useState, useEffect } from "react";
 
-
-
 // Componentes
-import Titulo from "../../components/titulo/Titulo";
-import Formulario from "../../components/formulario/Formulario";
+import Title from "../../components/title/Title";
+import Form from "../../components/form/Form";
 
 const Home = () => {
 
-    // UseStates
-    const [modalFormulario, setModalFormulario] = useState(false)
+    // Estados
+    const [showModal, setShowModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
 
-    const [modalEditar, setModalEditar] = useState(false)
-
-
-    // Obtener datos del local storage
-    const obtenerPeliculas = () => {
-        const data = localStorage.getItem("peliculas");
+    // Obtener datos del localStorage
+    const getMovies = () => {
+        const data = localStorage.getItem("movies");
         return data ? JSON.parse(data) : [];
     };
 
-    const [peliculas, setPeliculas] = useState(obtenerPeliculas);
-
+    const [movies, setMovies] = useState(getMovies);
     
     // Función para agregar película
-    const agregarPelicula = (nuevaPelicula) => {
-        const peliculasActualizadas = [...peliculas, nuevaPelicula];
-        setPeliculas(peliculasActualizadas);
-        localStorage.setItem("peliculas", JSON.stringify(peliculasActualizadas));
+    const addMovie = (newMovie) => {
+        const updatedMovies = [...movies, newMovie];
+        setMovies(updatedMovies);
+        localStorage.setItem("movies", JSON.stringify(updatedMovies));
     };
 
     // Función para cerrar modal
-    const cerrarModal = () => {
-        setModalFormulario(false);
+    const closeModal = () => {
+        setShowModal(false);
     };
 
 
     // PARA LAUTI QUE VA A CREAR LAS FUNCIONES
     // Forma convencional de crear funciones en react
     // Siempre se declara con const, si no hay parametro se deja vacio
-    const nombreFuncion = (parametro) =>{
-        //codigo
+    const functionName = (parameter) => {
+        // codigo
     }
 
+    console.log(movies)
   return (
     <div>
-        <Titulo texto="Gestor de Películas y Series" />
+        <Title texto="Gestor de Películas y Series" />
 
-        <button onClick={() => setModalFormulario(true)}>
+        <button onClick={() => setShowModal(true)}>
             Agregar Película o Serie
         </button>
 
@@ -59,19 +55,18 @@ const Home = () => {
 
         {/* Listas */}
         <h2>Por ver</h2>
-        {/* <Lista tipo="porVer" /> */}
+        {/* <List type="toWatch" /> */}
         <p>No hay películas por ver</p>
 
         <h2>Vistas</h2>
-        {/* <Lista tipo="vistas" /> */}
+        {/* <List type="watched" /> */}
         <p>No hay películas vistas</p>
 
-
         {/* Modal del formulario */}
-        <Formulario 
-            agregar={agregarPelicula}
-            cerrar={cerrarModal}
-            mostrar={modalFormulario}
+        <Form 
+            onAdd={addMovie}
+            onClose={closeModal}
+            isVisible={showModal}
         />
     </div>
   );
