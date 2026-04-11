@@ -1,18 +1,33 @@
 import { useState } from "react";
 import itemCardStyles from './itemCard.module.css'
- 
+
 export default function ItemCard({
   title = 'Titulo',
   type = 'Serie/Pelicula',
   genre = 'Genero',
   year = 'Año',
-  rating = 3,
+  rating = 3, 
   director = 'Director',
+  getMovies,
+  editMovie
 }) {
   const fullStars = Math.floor(rating); // no es necesario usar floor
   const emptyStars = 5 - fullStars;
   const [openedPanel, setOpenedPanel] = useState(false);
-  const openPanel = ()=>{setOpenedPanel(!openedPanel)};
+  const openPanel = () => {setOpenedPanel(!openedPanel)};
+
+  const [watched, setWatched] = useState(() => {
+    const allMovies = getMovies();
+    const currentMovie = allMovies.find(movie => movie.title === title);
+    return currentMovie ? currentMovie.watched : false;
+  });
+
+  const markAsWatched = (e, movieTitle) => {
+    e.stopPropagation();  //es para que no se active el modal
+    const nuevoEstado = !watched
+    setWatched(nuevoEstado);
+    editMovie(movieTitle, nuevoEstado);
+  };
 
   return (
     <>
@@ -36,6 +51,9 @@ export default function ItemCard({
   
         <p className={itemCardStyles.director}>Dirigido por <span className={itemCardStyles.directorsName}>{director}</span></p>
   
+      <button className={itemCardStyles.watchedButton} onClick={(e) => markAsWatched(e, title)}>
+        {watched ? "Marcar como NO vista" : "Marcar como vista"}
+      </button>
       </article>
 
 
