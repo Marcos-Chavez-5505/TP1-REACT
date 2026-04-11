@@ -1,0 +1,278 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.card {
+  --p-bg: #202020;
+  --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
+  --p-a: #dfcbb3;
+  --s-a: hsl(from var(--p-a) h s calc(l - 3) / 0.7);
+
+  background-color: #2a2a2a;
+  border-radius: 14px;
+  padding: 2rem;
+  width: 250px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  align-content: center;
+  justify-content: center;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--p-a);
+  margin: 0;
+  line-height: 0.8;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.typeGenreContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: baseline;
+  margin-top: 1rem;
+}
+
+.type {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--p-a);
+}
+
+.genre {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--s-a);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yearRatingContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.year {
+  font-size: 1rem;
+  color: var(--p-a);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.dot {
+  color: var(--p-a);
+  font-size: 1rem;
+}
+
+.rating {
+  font-size: 1.3rem;
+  color: var(--p-a);
+  letter-spacing: 1px;
+  line-height: 0.5;
+}
+
+.director {
+  font-size: 0.9rem;
+  color: var(--s-a);
+  font-style: italic;
+  margin: 0;
+  font-weight: 400;
+  text-align: left;
+}
+
+.directorsName {
+  font-style: normal;
+  color: var(--p-a);
+}
+
+
+
+/* Editor panel ------------------------------------------ */
+.panelContainer {
+  --p-bg: #202020;
+  --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
+  --p-a: #dfcbb3;
+  --s-a: hsl(from var(--p-a) h s calc(l - 3) / 0.7);
+  --s-bg-field: #2b2b2b;
+  font-family: 'Inter', sans-serif;
+  background-color: #1c1c1edc;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+}
+
+.panelBackground {
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  position: fixed;
+}
+
+.panel {
+  background-color: var(--p-bg);
+  border-radius: 18px;
+  padding: 24px;
+  max-width: 340px;
+  max-height: 600px;
+  margin: auto;
+  z-index: 1000;
+  border: solid var(--s-a) 1px;
+  position: relative;
+}
+
+.closePanelCross {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  color: var(--p-a);
+  font-weight: 700;
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: solid var(--p-a) 1px;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 1.8rem;
+  height: 1.8rem;
+  line-height: 0;
+}
+.closePanelCross:hover {
+  background-color: var(--p-a);
+  color: var(--p-bg);
+}
+
+.titlePanel {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--p-a);
+  margin: 0 0 1rem 0;
+  line-height: 0.8;
+  letter-spacing: 0.5px;
+  text-align: left;
+
+}
+
+.field {
+  margin-bottom: 16px;
+  color: var(--s-bg-field);
+}
+
+.label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--p-a);
+  text-align: left;
+}
+
+.input {
+  width: 100%;
+  color: var(--s-bg-field);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  color: var(--s-a);
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  text-align: left;
+}
+
+.input::placeholder {
+  color: hsl(from var(--s-a) h s calc(l - 3) / 0.8);
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.fieldType {
+  flex: 1.1;
+}
+
+.fieldYear {
+  flex: 0.7;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 8px;
+  background: var(--s-bg-field);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--p-a);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.radio {
+  accent-color: var(--p-a);
+  width: 16px;
+  height: 16px;
+}
+
+.genreGrid {
+  background: var(--s-bg-field);
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--p-a);
+  cursor: pointer;
+  padding: 3px 0;
+}
+
+.checkbox {
+  accent-color: var(--p-a);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  font-size: 28px;
+  cursor: pointer;
+  color: #423f3a;
+}
+
+.starFilled {
+  color: var(--p-a);
+}
