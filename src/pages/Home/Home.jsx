@@ -6,65 +6,6 @@ import Form from "../../components/form/Form";
 import List from "../../components/list/List";
 
 
-const arrayMovies = [
-  {
-    title: "El Padrino",
-    type: "Película",
-    genre: "Drama, Crimen",
-    year: 1972,
-    rating: 5,
-    director: "Francis Ford Coppola"
-  },
-  {
-    title: "Origen",
-    type: "Película",
-    genre: "Ciencia ficción, Acción",
-    year: 2010,
-    rating: 4,
-    director: "Christopher Nolan"
-  },
-  {
-    title: "Pulp Fiction",
-    type: "Película",
-    genre: "Crimen, Drama",
-    year: 1994,
-    rating: 5,
-    director: "Quentin Tarantino"
-  },
-  {
-    title: "The Matrix",
-    type: "Película",
-    genre: "Acción, Ciencia ficción",
-    year: 1999,
-    rating: 4,
-    director: "Lana Wachowski, Lilly Wachowski"
-  },
-  {
-    title: "Forrest Gump",
-    type: "Película",
-    genre: "Drama, Romance",
-    year: 1994,
-    rating: 4,
-    director: "Robert Zemeckis"
-  },
-  {
-    title: "Interestelar",
-    type: "Película",
-    genre: "Ciencia ficción, Drama",
-    year: 2014,
-    rating: 4,
-    director: "Christopher Nolan"
-  },
-  {
-    title: "Parásitos",
-    type: "Película",
-    genre: "Thriller, Drama",
-    year: 2019,
-    rating: 5,
-    director: "Bong Joon-ho"
-  }
-];
-
 
 const Home = () => {
 
@@ -137,7 +78,7 @@ const Home = () => {
             isVisible={showModal}
         />
 
-        <List itemsToList={arrayMovies} getMovies={getMovies} editMovie={editMovie}/>
+        <List getMovies={getMovies} editMovie={editMovie}/>
     </div>
 
 
