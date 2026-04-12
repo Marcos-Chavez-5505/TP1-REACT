@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // Componentes
 import Title from "../../components/title/Title";
@@ -47,6 +47,15 @@ const Home = () => {
         localStorage.setItem('movies', JSON.stringify(peliculas));
     }
 
+    const deleteMovie = (movieTitle) => {
+        let movies = JSON.parse(localStorage.getItem('movies'));
+
+        let newMovieArray = movies.filter(movie => movie.title !== movieTitle)
+
+        localStorage.setItem('movies', JSON.stringify(newMovieArray));
+        setMovies(newMovieArray)
+    }
+
     console.log(movies)
   return (
     <div>
@@ -78,7 +87,7 @@ const Home = () => {
             isVisible={showModal}
         />
 
-        <List getMovies={getMovies} editMovie={editMovie}/>
+        <List getMovies={getMovies} deleteMovie={deleteMovie} editMovie={editMovie}/>
     </div>
 
 

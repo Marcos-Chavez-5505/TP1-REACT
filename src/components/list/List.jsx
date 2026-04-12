@@ -1,7 +1,7 @@
 import listStyles from './list.module.css'
 import ItemCard from '../item/ItemCard'
 
-export default function List({itemsToList, getMovies, editMovie}) {
+export default function List({itemsToList, getMovies, editMovie, deleteMovie}) {
 const movies = getMovies();
   return (
     <section className={listStyles.listContainer}>
@@ -17,6 +17,7 @@ const movies = getMovies();
           director={item?.director}
           getMovies={getMovies}
           editMovie={editMovie}
+          deleteMovie={deleteMovie}
         />
         )
       })}
