@@ -1,11 +1,11 @@
 import listStyles from './list.module.css'
 import ItemCard from '../item/ItemCard'
 
-export default function List({itemsToList}) {
-
+export default function List({itemsToList, getMovies, editMovie}) {
+const movies = getMovies();
   return (
     <section className={listStyles.listContainer}>
-      {itemsToList.map((item)=>{
+      {movies.map((item)=>{
         return (
         <ItemCard
           key={item?.title}
@@ -15,6 +15,8 @@ export default function List({itemsToList}) {
           year={item?.year}
           rating={item?.rating}
           director={item?.director}
+          getMovies={getMovies}
+          editMovie={editMovie}
         />
         )
       })}

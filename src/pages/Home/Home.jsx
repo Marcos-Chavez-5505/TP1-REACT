@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 // Componentes
 import Title from "../../components/title/Title";
 import Form from "../../components/form/Form";
+import List from "../../components/list/List";
+
+
 
 const Home = () => {
 
@@ -30,12 +33,18 @@ const Home = () => {
         setShowModal(false);
     };
 
+    // !Esta funcion se llama en itemCard.jsx
+    const editMovie = (movieTitle, watched) => { 
+        // Lo tengo que utilizar para actualizar vista o no vista
+        let peliculas = JSON.parse(localStorage.getItem('movies'));
 
-    // PARA LAUTI QUE VA A CREAR LAS FUNCIONES
-    // Forma convencional de crear funciones en react
-    // Siempre se declara con const, si no hay parametro se deja vacio
-    const functionName = (parameter) => {
-        // codigo
+        peliculas = peliculas.map(peli => 
+        peli.title === movieTitle
+            ? { ...peli, watched: watched } 
+            : peli
+        );
+
+        localStorage.setItem('movies', JSON.stringify(peliculas));
     }
 
     console.log(movies)
@@ -68,7 +77,11 @@ const Home = () => {
             onClose={closeModal}
             isVisible={showModal}
         />
+
+        <List getMovies={getMovies} editMovie={editMovie}/>
     </div>
+
+
   );
 }
 
