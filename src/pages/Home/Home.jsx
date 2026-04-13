@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import styles from "./Home.module.css";
 // Componentes
 import Title from "../../components/title/Title";
 import Form from "../../components/form/Form";
@@ -61,7 +61,7 @@ const Home = () => {
     <div>
         <Title texto="Gestor de Películas y Series" />
 
-        <button onClick={() => setShowModal(true)}>
+        <button className={styles.addButton} onClick={() => setShowModal(true)}>
             Agregar Película o Serie
         </button>
 
