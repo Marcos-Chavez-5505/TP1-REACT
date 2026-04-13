@@ -1,5 +1,6 @@
 import { useState } from "react";
 import itemCardStyles from './itemCard.module.css'
+import DeleteModal from "../modalDelete/modalDelete";
 
 export default function ItemCard({
   title = 'Titulo',
@@ -9,7 +10,8 @@ export default function ItemCard({
   rating = 3, 
   director = 'Director',
   getMovies,
-  editMovie
+  editMovie,
+  deleteMovie,
 }) {
   const fullStars = Math.floor(rating); // no es necesario usar floor
   const emptyStars = 5 - fullStars;
@@ -29,11 +31,35 @@ export default function ItemCard({
     editMovie(movieTitle, nuevoEstado);
   };
 
+  const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
+
+  const showModal = (e) => { 
+    e.stopPropagation();  //es para que no se active el modal de la edicion de card
+    setVisibleDeleteModal(true);
+  }
+
+  const cerrarModal = () => {
+    setVisibleDeleteModal(false);
+  }
+
+  const erase = (movieTitle) => {
+    deleteMovie(movieTitle)
+  }
+
+
   return (
     <>
       <article className={itemCardStyles.card} onClick={openPanel}>
+      <button className={itemCardStyles.deleteButton} onClick={(e) => showModal(e)}>
+        ×
+      </button>
   
-        <h2 className={itemCardStyles.title}>{title}</h2>
+        <h2 
+          className={itemCardStyles.title} 
+          title={title}  
+        >
+          {title}
+        </h2>
   
         <div className={itemCardStyles.typeGenreContainer}>
           <span className={itemCardStyles.type}>{type}</span>
@@ -49,13 +75,22 @@ export default function ItemCard({
           </span>
         </div>
   
+        
         <p className={itemCardStyles.director}>Dirigido por <span className={itemCardStyles.directorsName}>{director}</span></p>
   
       <button className={itemCardStyles.watchedButton} onClick={(e) => markAsWatched(e, title)}>
         {watched ? "Marcar como NO vista" : "Marcar como vista"}
       </button>
-      </article>
 
+
+      </article>
+      
+        <DeleteModal 
+          isVisible={visibleDeleteModal}
+          onClose={cerrarModal}
+          onConfirm={() => erase(title)}
+          title={title}
+        />
 
       {openedPanel && (
         <section className={itemCardStyles.panelContainer}>
