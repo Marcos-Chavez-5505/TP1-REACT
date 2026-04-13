@@ -6,7 +6,6 @@ import Form from "../form/Form"; // Importamos el Form reutilizable
 export default function ItemCard({
   title = 'Titulo',
   type = 'Serie/Pelicula',
-  genre = 'Genero',
   year = 'Año',
   rating = 3, 
   director = 'Director',
@@ -85,7 +84,7 @@ export default function ItemCard({
         >
           {title}
         </h2>
-  
+
         <div className={itemCardStyles.typeGenreContainer}>
           <span className={itemCardStyles.type}>{type}</span>
           <span className={itemCardStyles.genre}>

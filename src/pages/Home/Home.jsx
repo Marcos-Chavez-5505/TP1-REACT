@@ -60,6 +60,8 @@ const Home = () => {
     const pendingCount = movies.filter(m => !m.watched).length;
     const watchedCount = movies.filter(m => m.watched).length;
     console.log(movies)
+
+    const [sortType, setSortType] = useState("")
   return (
     <div>
         <Title texto="Gestor de Películas y Series" />
@@ -68,7 +70,13 @@ const Home = () => {
             Agregar Película o Serie
         </button>
 
-
+        <br />
+        <select name="sortType" className={styles.sortSelect} onChange={(e) => setSortType(e.target.value)}>
+            <option value="" disabled>Ordenar por</option>
+            <option value="year">Año</option>
+            <option value="rating">Rating</option>
+        </select>
+        
         <div className={styles.twoColumns}>
             <div>
                 <h2>Por ver: {pendingCount}</h2>
@@ -78,6 +86,7 @@ const Home = () => {
                     editMovie={editMovie}
                     filterType="towatch"
                     emptyMessage="No hay películas por ver"
+                    sortType={sortType}
                 />
             </div>
 
@@ -89,6 +98,7 @@ const Home = () => {
                     editMovie={editMovie}
                     filterType="watched"
                     emptyMessage="No hay películas vistas"
+                    sortType={sortType}
                 />
             </div>
         </div>
