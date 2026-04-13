@@ -1,119 +1,239 @@
-import { useState } from 'react'
-import "./form.css" 
+import { useState, useEffect } from 'react'
+import styles from './form.module.css'
 
-function Form({ onAdd, onClose, isVisible }) {
+function Form({ onAdd, onEdit, onClose, isVisible, initialData }) {
   const [formData, setFormData] = useState({
     title: '',
     director: '',
     year: '',
-    genre: 'action',
-    rating: 5,
-    type: 'movie',
+    genres: [],
+    rating: 0,
+    type: 'Película',
     watched: false
   })
 
-  // Cada vez que un input se modifica los datos se van guardando dentro del useState
+  const [errors, setErrors] = useState({})  
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title || '',
+        director: initialData.director || '',
+        year: initialData.year || '',
+       genres: Array.isArray(initialData.genres)
+        ? initialData.genres
+        : [],
+        rating: initialData.rating || 0,
+        type: initialData.type || 'Película',
+        watched: initialData.watched || false
+      })
+    } else {
+      setFormData({
+        title: '',
+        director: '',
+        year: '',
+        genres: [],
+        rating: 0,
+        type: 'Película',
+        watched: false
+      })
+    }
+    setErrors({})
+  }, [initialData, isVisible])
+
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }))
   }
 
-  // Guarda los datos de las peliculas
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    
-    // validaciones
-    if (!formData.title.trim() || !formData.director.trim() || !formData.year) {
-      alert('Completá todos los campos')
-      return
+  const handleGenreChange = (genre) => {
+    setFormData(prev => {
+      const already = prev.genres.includes(genre)
+      return {
+        ...prev,
+        genres: already
+          ? prev.genres.filter(g => g !== genre)
+          : [...prev.genres, genre]
+      }
+    })
+    if (errors.genres) setErrors(prev => ({ ...prev, genres: null }))
+  }
+
+  const validate = () => {
+    const currentYear = new Date().getFullYear()
+    const newErrors = {}
+
+    if (!formData.title.trim()) newErrors.title = 'El título es requerido'
+    if (!formData.director.trim()) newErrors.director = 'El director es requerido'
+    if (!formData.year) {
+      newErrors.year = 'El año es requerido'
+    } else if (formData.year < 1900 || formData.year > currentYear) {
+      newErrors.year = `Debe estar entre 1900 y ${currentYear}`
     }
     
-    onAdd({
-      ...formData,
-      id: Date.now()
-    })
-    
-    setFormData({
-      title: '',
-      director: '',
-      year: '',
-      genre: 'action',
-      rating: 5,
-      type: 'movie',
-      watched: false
-    })
-    
+    if (formData.genres.length === 0) {
+      newErrors.genres = 'Debes seleccionar al menos un género'
+    }
+
+    return newErrors
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const newErrors = validate()
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return
+    }
+
+    const payload = {
+        ...formData,
+        genres: Array.isArray(formData.genres) ? formData.genres : [],
+        id: initialData ? initialData.id : Date.now()
+        }
+
+        if (initialData) {
+        onEdit(payload)
+        } else {
+        onAdd(payload)
+    }
+
+    // Resetear solo si es modo creación
+    if (!initialData) {
+      setFormData({
+        title: '',
+        director: '',
+        year: '',
+        genres: [],
+        rating: 0,
+        type: 'Película',
+        watched: false
+      })
+    }
+    setErrors({})
     onClose()
   }
 
   if (!isVisible) return null
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>✕</button>
-        
-        <h2>Agregar Película o Serie</h2>
-        
+    <section className={styles.panelContainer}>
+      <div className={styles.panelBackground} onClick={onClose}></div>
+
+      <article className={styles.panel}>
+        <button className={styles.closePanelCross} onClick={onClose}>×</button>
+
+        <h2 className={styles.titlePanel}>
+          {initialData ? 'Editar tarjeta' : 'Agregar película o serie'}
+        </h2>
+
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Título"
-            required
-          />
-          
-          <input
-            type="text"
-            name="director"
-            value={formData.director}
-            onChange={handleChange}
-            placeholder="Director"
-            required
-          />
-          
-          <input
-            type="number"
-            name="year"
-            value={formData.year}
-            onChange={handleChange}
-            placeholder="Año"
-            min="1900"
-            max={new Date().getFullYear()}
-            required
-          />
-          
-          <select name="genre" value={formData.genre} onChange={handleChange}>
-            <option value="action">Acción</option>
-            <option value="comedy">Comedia</option>
-            <option value="drama">Drama</option>
-            <option value="horror">Terror</option>
-            <option value="sci-fi">Ciencia Ficción</option>
-          </select>
-          
-          {/* Se que los emojis parecen ia pero queda bien */}
-          <select name="rating" value={formData.rating} onChange={handleChange}>
-            <option value="1">⭐</option>
-            <option value="2">⭐⭐</option>
-            <option value="3">⭐⭐⭐</option>
-            <option value="4">⭐⭐⭐⭐</option>
-            <option value="5">⭐⭐⭐⭐⭐</option>
-          </select>
-          
-          <select name="type" value={formData.type} onChange={handleChange}>
-            <option value="movie">Película</option>
-            <option value="series">Serie</option>
-          </select>
-          
-          <div className="modal-buttons">
+          <div className={styles.field}>
+            <label className={styles.label}>Título</label>
+            <input
+              type="text"
+              name="title"
+              placeholder="Título de serie o película"
+              value={formData.title}
+              onChange={handleChange}
+              className={`${styles.input} ${errors.title ? styles.inputError : ''}`}
+            />
+            {errors.title && <span className={styles.errorMsg}>{errors.title}</span>}
+          </div>
+
+          <div className={styles.row}>
+            <div className={styles.fieldType}>
+              <label className={styles.label}>Tipo</label>
+              <div className={styles.radioGroup}>
+                {['Película', 'Serie'].map(t => (
+                  <label key={t} className={styles.radioLabel}>
+                    <input
+                      type="radio"
+                      name="type"
+                      value={t}
+                      checked={formData.type === t}
+                      onChange={handleChange}
+                      className={styles.radio}
+                    />
+                    {t}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.fieldYear}>
+              <label className={styles.label}>Año</label>
+              <input
+                type="number"
+                name="year"
+                placeholder="0000"
+                value={formData.year}
+                onChange={handleChange}
+                min="1900"
+                max={new Date().getFullYear()}
+                className={`${styles.input} ${errors.year ? styles.inputError : ''}`}
+              />
+              {errors.year && <span className={styles.errorMsg}>{errors.year}</span>}
+            </div>
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Género</label>
+            <div className={`${styles.genreGrid} ${errors.genres ? styles.gridError : ''}`}>
+              {['Acción', 'Drama', 'Aventura', 'Fantasía', 'Comedia', 'Ciencia Ficción', 'Terror', 'Otro'].map(g => (
+                <label key={g} className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={formData.genres.includes(g)}
+                    onChange={() => handleGenreChange(g)}
+                    className={styles.checkbox}
+                  />
+                  {g}
+                </label>
+              ))}
+            </div>
+            {errors.genres && <span className={styles.errorMsg}>{errors.genres}</span>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Director</label>
+            <input
+              type="text"
+              name="director"
+              placeholder="Nombre del director"
+              value={formData.director}
+              onChange={handleChange}
+              className={`${styles.input} ${errors.director ? styles.inputError : ''}`}
+            />
+            {errors.director && <span className={styles.errorMsg}>{errors.director}</span>}
+          </div>
+
+          <div className={styles.field}>
+            <label className={styles.label}>Rating</label>
+            <div className={styles.stars}>
+              {[1, 2, 3, 4, 5].map(n => (
+                <span
+                  key={n}
+                  onClick={() => setFormData(prev => ({ ...prev, rating: n }))}
+                  className={n <= formData.rating
+                    ? `${styles.star} ${styles.starFilled}`
+                    : styles.star}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.modalButtons}>
             <button type="button" onClick={onClose}>Cancelar</button>
             <button type="submit">Guardar</button>
           </div>
         </form>
-      </div>
-    </div>
+      </article>
+    </section>
   )
 }
 

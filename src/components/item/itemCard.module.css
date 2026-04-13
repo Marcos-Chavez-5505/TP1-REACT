@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-*{
+* {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
+
+/* ---------------- CARD ---------------- */
+
 .card {
   position: relative;
+
   --p-bg: #202020;
   --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
   --p-a: #dfcbb3;
@@ -13,97 +18,104 @@
 
   background-color: #2a2a2a;
   border-radius: 14px;
-  padding: 2rem;
-  width: 250px;
-  height: 175px;
+  padding: 1.5rem;
+  width: 260px;
+  min-height: 190px;
+
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', sans-serif;
-  align-content: center;
-  justify-content: center;
+  justify-content: space-between;
 
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
   user-select: none;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
 }
 
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* ---------------- BUTTONS ---------------- */
+
 .watchedButton {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);  
-  bottom: 10px;
+  width: 100%;
+  margin-top: 1rem;
   background-color: rgb(210, 159, 97);
   border: none;
-  padding: 5px;
-  font-size: 15px;
+  padding: 8px;
+  font-size: 14px;
   border-radius: 6px;
-  width: 70%;
-  
-  &:hover {
-    transition: background-color .1s ease;
-    background-color: #454545;
-    border: 2px solid #dfcbb3;
-  }
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.watchedButton:hover {
+  background-color: #454545;
+  border: 2px solid #dfcbb3;
+  color: #dfcbb3;
 }
 
 .deleteButton {
   background-color: #dc2626;
   color: #ffffff;
   border: none;
-  padding: 2px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: x-large;
-  font-weight: 500;
-  transition: all 0.2s ease;
+
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 30px;
-  height: 30px;
+
+  width: 28px;
+  height: 28px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
 }
 
 .deleteButton:hover {
   background-color: #ef4444;
-  transform: scale(1.02);
+  transform: scale(1.05);
 }
 
 .deleteButton:active {
   background-color: #b91c1c;
-  transform: scale(0.98);
+  transform: scale(0.95);
 }
 
+/* ---------------- TEXT ---------------- */
+
 .title {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--p-a);
-  margin: 0;
-  line-height: 0.8;
-  letter-spacing: 0.5px;
+  line-height: 1.1;
   text-align: left;
-  
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .typeGenreContainer {
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: baseline;
-  margin-top: 1rem;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.5rem;
 }
 
 .type {
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 0.95rem;
   color: var(--p-a);
 }
 
 .genre {
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 0.95rem;
   color: var(--s-a);
 
   white-space: nowrap;
@@ -113,43 +125,37 @@
 
 .yearRatingContainer {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 6px;
-  margin-bottom: 0.5rem;
+  margin-top: 0.4rem;
 }
 
 .year {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--p-a);
   font-weight: 600;
-  letter-spacing: 0.5px;
 }
 
 .dot {
   color: var(--p-a);
-  font-size: 1rem;
 }
 
 .rating {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: var(--p-a);
   letter-spacing: 1px;
-  line-height: 0.5;
+  line-height: 1;
 }
 
 .director {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--s-a);
   font-style: italic;
-  margin: 0;
-  font-weight: 400;
-  text-align: left;
+  margin-top: 0.3rem;
 
   white-space: nowrap;
   overflow: hidden;
-  text-overflow:ellipsis;
-  max-width: 100%;
+  text-overflow: ellipsis;
 }
 
 .directorsName {
@@ -157,172 +163,172 @@
   color: var(--p-a);
 }
 
+/* ---------------- PANEL (MODAL) ---------------- */
 
-
-/* Editor panel ------------------------------------------ */
 .panelContainer {
   --p-bg: #202020;
   --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
   --p-a: #dfcbb3;
   --s-a: hsl(from var(--p-a) h s calc(l - 3) / 0.7);
   --s-bg-field: #2b2b2b;
+
   font-family: 'Inter', sans-serif;
+
   background-color: #1c1c1edc;
   width: 100vw;
   height: 100vh;
+
   display: flex;
-  align-content: center;
   justify-content: center;
+  align-items: center;
+
   position: fixed;
   top: 0;
   z-index: 10;
-}
-
-.panelBackground {
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  position: fixed;
 }
 
 .panel {
   background-color: var(--p-bg);
   border-radius: 18px;
   padding: 24px;
+
+  width: 100%;
   max-width: 340px;
-  max-height: 600px;
-  margin: auto;
-  z-index: 1000;
+
   border: solid var(--s-a) 1px;
   position: relative;
 }
+
+/* CLOSE BUTTON */
 
 .closePanelCross {
   position: absolute;
   right: 1rem;
   top: 1rem;
+
   color: var(--p-a);
   font-weight: 700;
-  font-size: 1.5rem;
-  background-color: transparent;
+  font-size: 1.2rem;
+
+  background: transparent;
   border: solid var(--p-a) 1px;
   border-radius: 50%;
+
   cursor: pointer;
-  width: 1.8rem;
-  height: 1.8rem;
-  line-height: 0;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .closePanelCross:hover {
   background-color: var(--p-a);
   color: var(--p-bg);
 }
 
+/* PANEL CONTENT */
+
 .titlePanel {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--p-a);
-  margin: 0 0 1rem 0;
-  line-height: 0.8;
-  letter-spacing: 0.5px;
-  text-align: left;
-
+  margin-bottom: 1rem;
 }
 
 .field {
-  margin-bottom: 16px;
-  color: var(--s-bg-field);
+  margin-bottom: 14px;
 }
 
 .label {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--p-a);
-  text-align: left;
 }
 
 .input {
   width: 100%;
-  color: var(--s-bg-field);
+  background: var(--s-bg-field);
   border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  color: var(--s-a);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--p-a);
   font-size: 14px;
-  box-sizing: border-box;
   outline: none;
-  text-align: left;
 }
 
 .input::placeholder {
-  color: hsl(from var(--s-a) h s calc(l - 3) / 0.8);
+  color: #888;
 }
+
+/* ROWS */
 
 .row {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-  align-items: flex-start;
+  gap: 10px;
 }
 
 .fieldType {
-  flex: 1.1;
+  flex: 1;
 }
 
 .fieldYear {
-  flex: 0.7;
+  flex: 1;
 }
+
+/* RADIO */
 
 .radioGroup {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   background: var(--s-bg-field);
-  border-radius: 10px;
-  padding: 8px 12px;
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .radioLabel {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  gap: 5px;
+  font-size: 13px;
   color: var(--p-a);
   cursor: pointer;
-  white-space: nowrap;
 }
 
 .radio {
   accent-color: var(--p-a);
-  width: 16px;
-  height: 16px;
 }
+
+/* GENRES */
 
 .genreGrid {
   background: var(--s-bg-field);
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 8px;
+  padding: 10px;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px 0;
+  gap: 6px;
 }
 
 .checkboxLabel {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 6px;
+  font-size: 13px;
   color: var(--p-a);
   cursor: pointer;
-  padding: 3px 0;
 }
 
 .checkbox {
   accent-color: var(--p-a);
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
 }
+
+/* STARS */
 
 .stars {
   display: flex;
@@ -330,7 +336,7 @@
 }
 
 .star {
-  font-size: 28px;
+  font-size: 24px;
   cursor: pointer;
   color: #423f3a;
 }
