@@ -1,13 +1,9 @@
 .listContainer {
-  /* background-color: #161616;
-  border-radius: 16px;
-  border: solid #ff3800 1px; */
   width: 100%;
   height: 100%;
   gap: 1rem;
   display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;  /* Centra las tarjetas */
   padding: 1rem 0;
 }

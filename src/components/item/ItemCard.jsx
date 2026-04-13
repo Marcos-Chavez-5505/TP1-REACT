@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import itemCardStyles from './itemCard.module.css'
 import DeleteModal from "../modalDelete/modalDelete";
 import Form from "../form/Form"; // Importamos el Form reutilizable
@@ -24,49 +24,53 @@ export default function ItemCard({
   const openEditModal = () => {setIsEditModalVisible(true);};
   const closeEditModal = () => {setIsEditModalVisible(false);};
 
-  const [watched, setWatched] = useState(() => {
-    const allMovies = getMovies();
-    const currentMovie = allMovies.find(movie => movie.title === title);
-    return currentMovie ? currentMovie.watched : false;
-  });
+    const [watched, setWatched] = useState(false);
 
-  const markAsWatched = (e, movieTitle) => {
-    e.stopPropagation();  //es para que no se active el modal
-    const nuevoEstado = !watched
-    setWatched(nuevoEstado);
-    editMovie(movieTitle, nuevoEstado);
-  };
+    useEffect(() => {
+        const allMovies = getMovies();
+        const currentMovie = allMovies.find(movie => movie.title === title);
+            if (currentMovie) {
+            setWatched(currentMovie.watched);
+        }
+    }, [getMovies, title]);
 
-  const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
+    const markAsWatched = (e, movieTitle) => {
+        e.stopPropagation();  //es para que no se active el modal
+        const nuevoEstado = !watched
+        setWatched(nuevoEstado);
+        editMovie(movieTitle, nuevoEstado);
+    };
 
-  const showModal = (e) => { 
-    e.stopPropagation();  //es para que no se active el modal de la edicion de card
-    setVisibleDeleteModal(true);
-  }
+    const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
 
-  const cerrarModal = () => {
-    setVisibleDeleteModal(false);
-  }
+    const showModal = (e) => { 
+        e.stopPropagation();  //es para que no se active el modal de la edicion de card
+        setVisibleDeleteModal(true);
+    }
 
-  const erase = (movieTitle) => {
-    deleteMovie(movieTitle)
-  }
+    const cerrarModal = () => {
+        setVisibleDeleteModal(false);
+    }
 
-  const handleEdit = (updatedMovie) => {
-    editMovie(updatedMovie);
-    setIsEditModalVisible(false);
-  }
+    const erase = (movieTitle) => {
+        deleteMovie(movieTitle)
+    }
 
-  const initialData = {
-    id: id,
-    title: title,
-    director: director,
-    year: year,
-    genres: genres,
-    rating: rating,
-    type: type,
-    watched: watched
-  }
+    const handleEdit = (updatedMovie) => {
+        editMovie(updatedMovie);
+        setIsEditModalVisible(false);
+    }
+
+    const initialData = {
+        id: id,
+        title: title,
+        director: director,
+        year: year,
+        genres: genres,
+        rating: rating,
+        type: type,
+        watched: watched
+    }
 
   return (
     <>

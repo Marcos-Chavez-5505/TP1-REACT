@@ -35,16 +35,16 @@ const Home = () => {
 
     // !Esta funcion se llama en itemCard.jsx
     const editMovie = (movieTitle, watched) => { 
-        // Lo tengo que utilizar para actualizar vista o no vista
         let peliculas = JSON.parse(localStorage.getItem('movies'));
 
         peliculas = peliculas.map(peli => 
-        peli.title === movieTitle
-            ? { ...peli, watched: watched } 
-            : peli
+            peli.title === movieTitle
+                ? { ...peli, watched: watched } 
+                : peli
         );
 
         localStorage.setItem('movies', JSON.stringify(peliculas));
+        setMovies(peliculas); 
     }
 
     const deleteMovie = (movieTitle) => {
@@ -56,6 +56,9 @@ const Home = () => {
         setMovies(newMovieArray)
     }
 
+    // Calcular contadores
+    const pendingCount = movies.filter(m => !m.watched).length;
+    const watchedCount = movies.filter(m => m.watched).length;
     console.log(movies)
   return (
     <div>
@@ -65,20 +68,30 @@ const Home = () => {
             Agregar Película o Serie
         </button>
 
-        {/* Contadores */}
-        <div>
-            <p>Por ver: 0</p>
-            <p>Vistas: 0</p>
+
+        <div className={styles.twoColumns}>
+            <div>
+                <h2>Por ver: {pendingCount}</h2>
+                <List 
+                    getMovies={getMovies} 
+                    deleteMovie={deleteMovie} 
+                    editMovie={editMovie}
+                    filterType="towatch"
+                    emptyMessage="No hay películas por ver"
+                />
+            </div>
+
+            <div>
+                <h2>Vistas: {watchedCount}</h2>
+                <List 
+                    getMovies={getMovies} 
+                    deleteMovie={deleteMovie} 
+                    editMovie={editMovie}
+                    filterType="watched"
+                    emptyMessage="No hay películas vistas"
+                />
+            </div>
         </div>
-
-        {/* Listas */}
-        <h2>Por ver</h2>
-        {/* <List type="toWatch" /> */}
-        <p>No hay películas por ver</p>
-
-        <h2>Vistas</h2>
-        {/* <List type="watched" /> */}
-        <p>No hay películas vistas</p>
 
         {/* Modal del formulario */}
         <Form 
@@ -87,7 +100,6 @@ const Home = () => {
             isVisible={showModal}
         />
 
-        <List getMovies={getMovies} deleteMovie={deleteMovie} editMovie={editMovie}/>
     </div>
 
 
