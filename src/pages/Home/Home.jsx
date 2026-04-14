@@ -63,6 +63,27 @@ const Home = () => {
     const watchedCount = items.filter(m => m.watched).length;
 
 
+   // Calcular contadores por género
+    const getGenreCounts = () => {
+        const counts = {};
+        
+        items.forEach(item => {
+            if (item.genres && Array.isArray(item.genres)) {
+                item.genres.forEach(genre => {
+                    counts[genre] = (counts[genre] || 0) + 1;
+                });
+            }
+        });
+        
+        return counts;
+    };
+
+    const genreCounts = getGenreCounts();
+
+
+
+
+
 	const [inputValue, setInputValue] = useState("");
 	const [checkboxFilter, setCheckboxFilter] = useState(['Película', 'Serie']);
 
@@ -82,7 +103,7 @@ const Home = () => {
 
     return (
         <div>
-            <Title texto="Gestor de Películas y Series" />
+            <Title texto="Películas y series por ver" />
 
             <button className={styles.addButton} onClick={() => setShowModal(true)}>
                 Agregar Película o Serie
@@ -104,11 +125,23 @@ const Home = () => {
             />
             
             <br/>
+            <p>Ordenar por</p>
             <select name="sortType" className={styles.sortSelect} onChange={(e) => setSortType(e.target.value)} value={sortType}>
                 <option value="" disabled>Ordenar por</option>
                 <option value="year">Año</option>
                 <option value="rating">Rating</option>
             </select>
+
+            <div className={styles.genreCounters}>
+                <h3>Contadores por género:</h3>
+                {Object.entries(genreCounts).length === 0 ? (
+                    <p>No hay géneros registrados</p>
+                ) : (
+                    Object.entries(genreCounts).map(([genre, count]) => (
+                        <p key={genre}>{genre}: {count}</p>
+                    ))
+                )}
+            </div>
 
             <div className={styles.twoColumns}>
                 <div>

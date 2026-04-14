@@ -100,10 +100,8 @@
   color: var(--p-a);
   line-height: 1.1;
   text-align: left;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal;
 
 }
 
@@ -123,9 +121,8 @@
   font-size: 0.95rem;
   color: var(--s-a);
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .yearRatingContainer {
