@@ -6,7 +6,7 @@
 
 | Nombre | Email | Rol |
 |--------|-------|-----|
-| Marcos Chavez | marcos.chavez@est.fi.uncoma.edu.ar | Scrum Master / Coordinador |
+| Marcos Chavez | marcos.chavez@est.fi.uncoma.edu.ar | Scrum Master |
 | Lucas Martinez | lucas.martinez@est.fi.uncoma.edu.ar | Desarrollador Frontend + UI |
 | Lautaro Lara | lautaro.lara@est.fi.uncoma.edu.ar | Desarrollador Logica Principal |
 
@@ -42,7 +42,7 @@ Aplicacion web desarrollada con React y Vite que funciona como un gestor persona
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/Marcos-Chavez-5505/TP1-REACT.git
+git clone https://github.com/Marcos-Chavez-5505/TP1-REACT
 
 # 2. Entrar a la carpeta del proyecto
 cd TP1-REACT
