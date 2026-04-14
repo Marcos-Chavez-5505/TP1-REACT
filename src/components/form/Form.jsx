@@ -91,7 +91,7 @@ function Form({ onAdd, onEdit, onClose, isVisible, initialData }) {
     const payload = {
         ...formData,
         genres: Array.isArray(formData.genres) ? formData.genres : [],
-        id: initialData ? initialData.id : Date.now()
+        id: initialData ? initialData.id : Date.now()    // revisar, creo que tiene que ser el título
         }
 
         if (initialData) {

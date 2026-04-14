@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import itemCardStyles from './itemCard.module.css'
 import DeleteModal from "../modalDelete/modalDelete";
-import Form from "../form/Form"; // Importamos el Form reutilizable
+import Form from "../form/Form";
 
 export default function ItemCard({
   title = 'Titulo',
@@ -15,13 +15,14 @@ export default function ItemCard({
   editItem,
   deleteItem,
 }) {
-  const fullStars = Math.floor(rating); // no es necesario usar floor
-  const emptyStars = 5 - fullStars;
-  
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  
-  const openEditModal = () => {setIsEditModalVisible(true);};
-  const closeEditModal = () => {setIsEditModalVisible(false);};
+
+    const fullStars = Math.floor(rating);
+    const emptyStars = 5 - fullStars;
+    
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    
+    const openEditModal = () => {setIsEditModalVisible(true);};
+    const closeEditModal = () => {setIsEditModalVisible(false);};
 
     const [watched, setWatched] = useState(false);
 
@@ -33,11 +34,13 @@ export default function ItemCard({
         }
     }, [items, title]);
 
-    const markAsWatched = (e, itemTitle) => {
+    const markAsWatched = (e) => {
         e.stopPropagation();  //es para que no se active el modal
         const newState = !watched
         setWatched(newState);
-        editItem(itemTitle, newState);
+        const allItems = items;
+        const currentItem = allItems.find(item => item.title === title);
+        handleEdit({...currentItem, watched: !currentItem.watched});
     };
 
     const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
@@ -56,7 +59,7 @@ export default function ItemCard({
     }
 
     const handleEdit = (updatedItem) => {
-        editItem(updatedItem);
+        editItem(title, updatedItem);
         setIsEditModalVisible(false);
     }
 
@@ -106,7 +109,7 @@ export default function ItemCard({
         
         <p className={itemCardStyles.director}>Dirigido por <span className={itemCardStyles.directorsName}>{director}</span></p>
   
-      <button className={itemCardStyles.watchedButton} onClick={(e) => markAsWatched(e, title)}>
+      <button className={itemCardStyles.watchedButton} onClick={(e) => markAsWatched(e)}>
         {watched ? "Marcar como NO vista" : "Marcar como vista"}
       </button>
 
