@@ -1,9 +1,7 @@
-// List.jsx
 import listStyles from './list.module.css'
 import ItemCard from '../item/ItemCard'
 
-export default function List({ items, editItem, deleteItem, filterType, emptyMessage }) {
-  // const movies = getMovies();
+export default function List({ items, editItem, deleteItem, filterType, emptyMessage, sortType }) {
   
   const filteredItems = items.filter(item => {
     if (filterType === 'watched') return item.watched === true;
@@ -11,26 +9,26 @@ export default function List({ items, editItem, deleteItem, filterType, emptyMes
     return true;
   });
 
-  const sortedFilteredMovies = (sortType) =>{
-        let sortedArray = [...filteredMovies]
+  const sortedFilteredItems = (sortType) =>{
+        let sortedArray = [...filteredItems]
         if (sortType === "year"){
-            sortedArray = [...filteredMovies].sort((a, b) => parseInt(b.year) - parseInt(a.year))
+            sortedArray = [...filteredItems].sort((a, b) => parseInt(b.year) - parseInt(a.year))
         }
         
         if(sortType === "rating"){
-            sortedArray = [...filteredMovies].sort((a, b) => b.rating - a.rating)
+            sortedArray = [...filteredItems].sort((a, b) => b.rating - a.rating)
         }
         console.log(sortedArray)
         return sortedArray
     }
   // Mensaje 
-  const mensajeVacio = emptyMessage || `No hay películas en esta sección`;
+  const emptyMessageToShow = emptyMessage || `No hay películas en esta sección`;
 
-  const moviesToShow = sortedFilteredMovies(sortType)
+  const itemsToShow = sortedFilteredItems(sortType)
   return (
     <section className={listStyles.listContainer}>
-      {filteredItems.length > 0 ? (
-        filteredItems.map((item) => (
+      {itemsToShow.length > 0 ? (
+        itemsToShow.map((item) => (
           <ItemCard
             key={item?.title}
             title={item?.title}
@@ -46,7 +44,7 @@ export default function List({ items, editItem, deleteItem, filterType, emptyMes
           />
         ))
       ) : (
-        <p className={listStyles.emptyMessage}>{mensajeVacio}</p>
+        <p className={listStyles.emptyMessage}>{emptyMessageToShow}</p>
       )}
     </section>
   );

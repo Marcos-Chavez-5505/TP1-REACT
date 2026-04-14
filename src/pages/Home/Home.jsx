@@ -13,6 +13,7 @@ const Home = () => {
     // Estados
     const [showModal, setShowModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
+    const [sortType, setSortType] = useState("")
 
     // Obtener datos del localStorage
     const getItems = () => {
@@ -35,12 +36,12 @@ const Home = () => {
     };
 
     // !Esta funcion se llama en itemCard.jsx
-    const editItem = (itemTitle, watched) => { 
+    const editItem = (itemTitle, updatedItem) => { 
         let itemsEdit = JSON.parse(localStorage.getItem('movies'));
 
         itemsEdit = itemsEdit.map(itemE => 
             itemE.title === itemTitle
-                ? { ...itemE, watched: watched } 
+                ? updatedItem 
                 : itemE
         );
 
@@ -74,12 +75,17 @@ const Home = () => {
         }
     }
 
-	const filteredItems = items.filter((item)=>{
-		return item.title.toLowerCase().includes(inputValue.toLowerCase())
+    const filteredItems = items
+        .filter((item) => {
+            return item.title.toLowerCase().includes(inputValue.toLowerCase())
             && checkboxFilter.includes(item.type);
-	});
+        })
+        .sort((a, b) => {
+            if (sortType === "year") return b.year - a.year;
+            if (sortType === "rating") return b.rating - a.rating;
+            return 0;
+        });
 
-    
     return (
         <div>
             <Title texto="Gestor de Películas y Series" />
@@ -102,6 +108,13 @@ const Home = () => {
                     setCheckboxFilterArray(e.target.value);
                 }}
             />
+            
+            <br/>
+            <select name="sortType" className={styles.sortSelect} onChange={(e) => setSortType(e.target.value)} value={sortType}>
+                <option value="" disabled>Ordenar por</option>
+                <option value="year">Año</option>
+                <option value="rating">Rating</option>
+            </select>
 
             <div className={styles.twoColumns}>
                 <div>
@@ -112,6 +125,7 @@ const Home = () => {
                         editItem={editItem}
                         filterType="towatch"
                         emptyMessage="No hay películas por ver"
+                        sortType={sortType}
                     />
                 </div>
 
@@ -123,6 +137,7 @@ const Home = () => {
                         editItem={editItem}
                         filterType="watched"
                         emptyMessage="No hay películas vistas"
+                        sortType={sortType}
                     />
                 </div>
             </div>
