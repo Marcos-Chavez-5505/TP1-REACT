@@ -41,7 +41,7 @@ const Home = () => {
 
         itemsEdit = itemsEdit.map(itemE => 
             itemE.title === itemTitle
-                ? { ...updatedItem} 
+                ? updatedItem 
                 : itemE
         );
 
