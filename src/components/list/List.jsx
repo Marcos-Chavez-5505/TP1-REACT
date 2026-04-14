@@ -11,9 +11,22 @@ export default function List({ items, editItem, deleteItem, filterType, emptyMes
     return true;
   });
 
+  const sortedFilteredMovies = (sortType) =>{
+        let sortedArray = [...filteredMovies]
+        if (sortType === "year"){
+            sortedArray = [...filteredMovies].sort((a, b) => parseInt(b.year) - parseInt(a.year))
+        }
+        
+        if(sortType === "rating"){
+            sortedArray = [...filteredMovies].sort((a, b) => b.rating - a.rating)
+        }
+        console.log(sortedArray)
+        return sortedArray
+    }
   // Mensaje 
   const mensajeVacio = emptyMessage || `No hay películas en esta sección`;
 
+  const moviesToShow = sortedFilteredMovies(sortType)
   return (
     <section className={listStyles.listContainer}>
       {filteredItems.length > 0 ? (
