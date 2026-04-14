@@ -4,7 +4,8 @@ import styles from "./Home.module.css";
 import Title from "../../components/title/Title";
 import Form from "../../components/form/Form";
 import List from "../../components/list/List";
-
+import InputSearch from "../../components/inputSearch/InputSearch"
+import CheckboxFilter from "../../components/checkboxFilter/CheckboxFilter"
 
 
 const Home = () => {
@@ -14,18 +15,18 @@ const Home = () => {
     const [showEditModal, setShowEditModal] = useState(false)
 
     // Obtener datos del localStorage
-    const getMovies = () => {
+    const getItems = () => {
         const data = localStorage.getItem("movies");
         return data ? JSON.parse(data) : [];
     };
 
-    const [movies, setMovies] = useState(getMovies);
+    const [items, setItems] = useState(getItems);
     
     // Función para agregar película
-    const addMovie = (newMovie) => {
-        const updatedMovies = [...movies, newMovie];
-        setMovies(updatedMovies);
-        localStorage.setItem("movies", JSON.stringify(updatedMovies));
+    const addItem = (newItems) => {
+        const updatedItems = [...items, newItems];
+        setItems(updatedItems);
+        localStorage.setItem("movies", JSON.stringify(updatedItems));
     };
 
     // Función para cerrar modal
@@ -34,76 +35,107 @@ const Home = () => {
     };
 
     // !Esta funcion se llama en itemCard.jsx
-    const editMovie = (movieTitle, watched) => { 
-        let peliculas = JSON.parse(localStorage.getItem('movies'));
+    const editItem = (itemTitle, watched) => { 
+        let itemsEdit = JSON.parse(localStorage.getItem('movies'));
 
-        peliculas = peliculas.map(peli => 
-            peli.title === movieTitle
-                ? { ...peli, watched: watched } 
-                : peli
+        itemsEdit = itemsEdit.map(itemE => 
+            itemE.title === itemTitle
+                ? { ...itemE, watched: watched } 
+                : itemE
         );
 
-        localStorage.setItem('movies', JSON.stringify(peliculas));
-        setMovies(peliculas); 
+        localStorage.setItem('movies', JSON.stringify(itemsEdit));
+        setItems(itemsEdit); 
     }
 
-    const deleteMovie = (movieTitle) => {
-        let movies = JSON.parse(localStorage.getItem('movies'));
+    const deleteItem = (itemTitle) => {
+        let items = JSON.parse(localStorage.getItem('movies'));
 
-        let newMovieArray = movies.filter(movie => movie.title !== movieTitle)
+        let newItemArray = items.filter(item => item.title !== itemTitle)
 
-        localStorage.setItem('movies', JSON.stringify(newMovieArray));
-        setMovies(newMovieArray)
+        localStorage.setItem('movies', JSON.stringify(newItemArray));
+        setItems(newItemArray)
     }
 
     // Calcular contadores
-    const pendingCount = movies.filter(m => !m.watched).length;
-    const watchedCount = movies.filter(m => m.watched).length;
-    console.log(movies)
-  return (
-    <div>
-        <Title texto="Gestor de Películas y Series" />
-
-        <button className={styles.addButton} onClick={() => setShowModal(true)}>
-            Agregar Película o Serie
-        </button>
+    const pendingCount = items.filter(m => !m.watched).length;
+    const watchedCount = items.filter(m => m.watched).length;
 
 
-        <div className={styles.twoColumns}>
-            <div>
-                <h2>Por ver: {pendingCount}</h2>
-                <List 
-                    getMovies={getMovies} 
-                    deleteMovie={deleteMovie} 
-                    editMovie={editMovie}
-                    filterType="towatch"
-                    emptyMessage="No hay películas por ver"
-                />
+	const [inputValue, setInputValue] = useState("");
+	const [checkboxFilter, setCheckboxFilter] = useState(['Película', 'Serie']);
+
+    const setCheckboxFilterArray = (a) => {
+        if (!checkboxFilter) { setCheckboxFilter([]); }
+        if (checkboxFilter?.includes(a)) {
+            setCheckboxFilter(checkboxFilter?.filter((item)=>(item!==a)));
+        } else {
+            setCheckboxFilter([...checkboxFilter, a])
+        }
+    }
+
+	const filteredItems = items.filter((item)=>{
+		return item.title.toLowerCase().includes(inputValue.toLowerCase())
+            && checkboxFilter.includes(item.type);
+	});
+
+    
+    return (
+        <div>
+            <Title texto="Gestor de Películas y Series" />
+
+            <button className={styles.addButton} onClick={() => setShowModal(true)}>
+                Agregar Película o Serie
+            </button>
+
+            <InputSearch
+                value={inputValue}
+                onChange={(e) => {
+                    setInputValue(e.target.value);
+                }}
+                placeholder="Buscar películas o series"
+            />
+            <CheckboxFilter
+                values={['Película', 'Serie']}
+                selected={checkboxFilter}
+                onChange={(e)=>{
+                    setCheckboxFilterArray(e.target.value);
+                }}
+            />
+
+            <div className={styles.twoColumns}>
+                <div>
+                    <h2>Por ver: {pendingCount}</h2>
+                    <List 
+                        items={filteredItems} 
+                        deleteItem={deleteItem} 
+                        editItem={editItem}
+                        filterType="towatch"
+                        emptyMessage="No hay películas por ver"
+                    />
+                </div>
+
+                <div>
+                    <h2>Vistas: {watchedCount}</h2>
+                    <List 
+                        items={filteredItems} 
+                        deleteItem={deleteItem} 
+                        editItem={editItem}
+                        filterType="watched"
+                        emptyMessage="No hay películas vistas"
+                    />
+                </div>
             </div>
 
-            <div>
-                <h2>Vistas: {watchedCount}</h2>
-                <List 
-                    getMovies={getMovies} 
-                    deleteMovie={deleteMovie} 
-                    editMovie={editMovie}
-                    filterType="watched"
-                    emptyMessage="No hay películas vistas"
-                />
-            </div>
+            {/* Modal del formulario */}
+            <Form 
+                onAdd={addItem}
+                onClose={closeModal}
+                isVisible={showModal}
+            />
+
         </div>
-
-        {/* Modal del formulario */}
-        <Form 
-            onAdd={addMovie}
-            onClose={closeModal}
-            isVisible={showModal}
-        />
-
-    </div>
-
-
-  );
+    );
 }
 
 export default Home;
