@@ -13,7 +13,7 @@ const Home = () => {
     // Estados
     const [showModal, setShowModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
-    const [sortType, setSortType] = useState("")
+    const [sortType, setSortType] = useState("year")
 
     // Obtener datos del localStorage
     const getItems = () => {
@@ -75,16 +75,10 @@ const Home = () => {
         }
     }
 
-    const filteredItems = items
-        .filter((item) => {
-            return item.title.toLowerCase().includes(inputValue.toLowerCase())
+    const filteredItems = items.filter((item) => {
+        return item.title.toLowerCase().includes(inputValue.toLowerCase())
             && checkboxFilter.includes(item.type);
-        })
-        .sort((a, b) => {
-            if (sortType === "year") return b.year - a.year;
-            if (sortType === "rating") return b.rating - a.rating;
-            return 0;
-        });
+    })
 
     return (
         <div>
