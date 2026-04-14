@@ -1,0 +1,41 @@
+.checkboxFilterContainer {  
+  --p-bg: #202020;
+  --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
+  --p-a: #dfcbb3;
+  --s-a: hsl(from var(--p-a) h s calc(l - 3) / 0.7);
+  --s-bg-field: #2b2b2b;
+  
+  background: var(--s-bg-field);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  width: 20%;
+  margin: auto;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+.checkboxFilterInnerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.checkboxFilter {
+  accent-color: var(--p-a);
+  width: 0.8rem;
+  height: 0.8rem;
+  cursor: pointer;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--p-a);
+  cursor: pointer;
+  user-select: none;
+}

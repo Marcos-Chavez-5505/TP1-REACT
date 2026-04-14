@@ -1,0 +1,27 @@
+.inputSearchBarContainer {
+  width: 100%;
+  margin: 1rem 0;
+
+  --p-bg: #202020;
+  --s-bg: hsl(from var(--p-bg) h s calc(l - 10));
+  --p-a: #dfcbb3;
+  --s-a: hsl(from var(--p-a) h s calc(l - 3) / 0.7);
+  --t-a: hsl(from var(--p-a) h s calc(l + 18));
+}
+
+.inputSearchBar {
+  width: 30%;
+  height: 2rem;
+  padding: 1rem;
+  border: solid var(--s-a) 1px;
+  border-radius: 6px;
+  background-color: var(--p-bg);
+  color: var(--t-a);
+}
+.inputSearchBar::placeholder {
+  color: var(--s-a);
+}
+.inputSearchBar:focus {
+  border: solid var(--p-a) 1px;
+  background-color: var(--s-bg);
+}

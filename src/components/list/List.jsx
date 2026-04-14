@@ -2,12 +2,12 @@
 import listStyles from './list.module.css'
 import ItemCard from '../item/ItemCard'
 
-export default function List({ getMovies, editMovie, deleteMovie, filterType, emptyMessage, sortType }) {
-  const movies = getMovies();
+export default function List({ items, editItem, deleteItem, filterType, emptyMessage }) {
+  // const movies = getMovies();
   
-  const filteredMovies = movies.filter(movie => {
-    if (filterType === 'watched') return movie.watched === true;
-    if (filterType === 'towatch') return movie.watched === false;
+  const filteredItems = items.filter(item => {
+    if (filterType === 'watched') return item.watched === true;
+    if (filterType === 'towatch') return item.watched === false;
     return true;
   });
 
@@ -29,8 +29,8 @@ export default function List({ getMovies, editMovie, deleteMovie, filterType, em
   const moviesToShow = sortedFilteredMovies(sortType)
   return (
     <section className={listStyles.listContainer}>
-      {moviesToShow.length > 0 ? (
-        moviesToShow.map((item) => (
+      {filteredItems.length > 0 ? (
+        filteredItems.map((item) => (
           <ItemCard
             key={item?.title}
             title={item?.title}
@@ -40,9 +40,9 @@ export default function List({ getMovies, editMovie, deleteMovie, filterType, em
             rating={item?.rating}
             director={item?.director}
             watched={item?.watched}
-            getMovies={getMovies}
-            editMovie={editMovie}
-            deleteMovie={deleteMovie}
+            items={items}
+            editItem={editItem}
+            deleteItem={deleteItem}
           />
         ))
       ) : (

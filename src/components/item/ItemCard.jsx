@@ -11,9 +11,9 @@ export default function ItemCard({
   director = 'Director',
   genres = [],
   id,
-  getMovies,
-  editMovie,
-  deleteMovie,
+  items,
+  editItem,
+  deleteItem,
 }) {
   const fullStars = Math.floor(rating); // no es necesario usar floor
   const emptyStars = 5 - fullStars;
@@ -26,18 +26,18 @@ export default function ItemCard({
     const [watched, setWatched] = useState(false);
 
     useEffect(() => {
-        const allMovies = getMovies();
-        const currentMovie = allMovies.find(movie => movie.title === title);
-            if (currentMovie) {
-            setWatched(currentMovie.watched);
+        const allItems = items;
+        const currentItem = allItems.find(item => item.title === title);
+            if (currentItem) {
+            setWatched(currentItem.watched);
         }
-    }, [getMovies, title]);
+    }, [items, title]);
 
-    const markAsWatched = (e, movieTitle) => {
+    const markAsWatched = (e, itemTitle) => {
         e.stopPropagation();  //es para que no se active el modal
-        const nuevoEstado = !watched
-        setWatched(nuevoEstado);
-        editMovie(movieTitle, nuevoEstado);
+        const newState = !watched
+        setWatched(newState);
+        editItem(itemTitle, newState);
     };
 
     const [visibleDeleteModal, setVisibleDeleteModal] = useState(false);
@@ -51,12 +51,12 @@ export default function ItemCard({
         setVisibleDeleteModal(false);
     }
 
-    const erase = (movieTitle) => {
-        deleteMovie(movieTitle)
+    const erase = (itemTitle) => {
+        deleteItem(itemTitle)
     }
 
-    const handleEdit = (updatedMovie) => {
-        editMovie(updatedMovie);
+    const handleEdit = (updatedItem) => {
+        editItem(updatedItem);
         setIsEditModalVisible(false);
     }
 
