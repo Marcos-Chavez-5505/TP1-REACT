@@ -12,32 +12,55 @@ const Home = () => {
 
     // Estados
     const [showModal, setShowModal] = useState(false)
-    const [showEditModal, setShowEditModal] = useState(false)
     const [sortType, setSortType] = useState("year")
+    const [sortBy, setSortBy] = useState('year')
+    const [sortDirection, setSortDirection] = useState('desc')
+
 
     // Obtener datos del localStorage
     const getItems = () => {
         const data = localStorage.getItem("movies");
-        return data ? JSON.parse(data) : [];
+        return data ? JSON.parse(data) : []
     };
 
-    const [items, setItems] = useState(getItems);
+    const [items, setItems] = useState(getItems)
     
     // Función para agregar película
     const addItem = (newItems) => {
-        const updatedItems = [...items, newItems];
+        const updatedItems = [...items, newItems]
         setItems(updatedItems);
-        localStorage.setItem("movies", JSON.stringify(updatedItems));
+        localStorage.setItem("movies", JSON.stringify(updatedItems))
     };
 
     // Función para cerrar modal
     const closeModal = () => {
-        setShowModal(false);
-    };
+        setShowModal(false)
+    }
+
+    // Function to sort items
+    const sortItems = (items) => {
+        if (!items.length) return items
+        
+        return [...items].sort((a, b) => {
+            let aValue = a[sortBy]
+            let bValue = b[sortBy]
+            
+            if (sortBy === 'rating') {
+                aValue = Number(aValue)
+                bValue = Number(bValue)
+            }
+            
+            if (sortDirection === 'asc') {
+                return aValue > bValue ? 1 : -1
+            } else {
+                return aValue < bValue ? 1 : -1
+            }
+        })
+    }
 
     // !Esta funcion se llama en itemCard.jsx
     const editItem = (itemTitle, updatedItem) => { 
-        let itemsEdit = JSON.parse(localStorage.getItem('movies'));
+        let itemsEdit = JSON.parse(localStorage.getItem('movies'))
 
         itemsEdit = itemsEdit.map(itemE => 
             itemE.title === itemTitle
@@ -45,12 +68,12 @@ const Home = () => {
                 : itemE
         );
 
-        localStorage.setItem('movies', JSON.stringify(itemsEdit));
-        setItems(itemsEdit); 
+        localStorage.setItem('movies', JSON.stringify(itemsEdit))
+        setItems(itemsEdit)
     }
 
     const deleteItem = (itemTitle) => {
-        let items = JSON.parse(localStorage.getItem('movies'));
+        let items = JSON.parse(localStorage.getItem('movies'))
 
         let newItemArray = items.filter(item => item.title !== itemTitle)
 
@@ -59,26 +82,26 @@ const Home = () => {
     }
 
     // Calcular contadores
-    const pendingCount = items.filter(m => !m.watched).length;
-    const watchedCount = items.filter(m => m.watched).length;
+    const pendingCount = items.filter(m => !m.watched).length
+    const watchedCount = items.filter(m => m.watched).length
 
 
    // Calcular contadores por género
     const getGenreCounts = () => {
-        const counts = {};
+        const counts = {}
         
         items.forEach(item => {
             if (item.genres && Array.isArray(item.genres)) {
                 item.genres.forEach(genre => {
-                    counts[genre] = (counts[genre] || 0) + 1;
+                    counts[genre] = (counts[genre] || 0) + 1
                 });
             }
         });
         
-        return counts;
-    };
+        return counts
+    }
 
-    const genreCounts = getGenreCounts();
+    const genreCounts = getGenreCounts()
 
 
 
@@ -125,12 +148,26 @@ const Home = () => {
             />
             
             <br/>
-            <p>Ordenar por</p>
-            <select name="sortType" className={styles.sortSelect} onChange={(e) => setSortType(e.target.value)} value={sortType}>
-                <option value="" disabled>Ordenar por</option>
-                <option value="year">Año</option>
-                <option value="rating">Rating</option>
-            </select>
+            <div className={styles.sortContainer}>
+                <p className={styles.sortLabel}>Ordenar por:</p>
+                <div className={styles.sortControls}>
+                    <select 
+                        className={styles.sortSelect}
+                        value={sortBy} 
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="year">Año</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                    
+                    <button 
+                        className={styles.sortButton}
+                        onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                    >
+                        {sortDirection === 'asc' ? 'Ascendente ↑' : 'Descendente ↓'}
+                    </button>
+                </div>
+            </div>
 
             <div className={styles.genreCounters}>
                 <h3>Contadores por género:</h3>
@@ -147,24 +184,22 @@ const Home = () => {
                 <div>
                     <h2>Por ver: {pendingCount}</h2>
                     <List 
-                        items={filteredItems} 
+                        items={sortItems(filteredItems.filter(item => !item.watched))} 
                         deleteItem={deleteItem} 
                         editItem={editItem}
                         filterType="towatch"
                         emptyMessage="No hay películas por ver"
-                        sortType={sortType}
                     />
                 </div>
 
                 <div>
                     <h2>Vistas: {watchedCount}</h2>
                     <List 
-                        items={filteredItems} 
+                        items={sortItems(filteredItems.filter(item => item.watched))} 
                         deleteItem={deleteItem} 
                         editItem={editItem}
                         filterType="watched"
                         emptyMessage="No hay películas vistas"
-                        sortType={sortType}
                     />
                 </div>
             </div>

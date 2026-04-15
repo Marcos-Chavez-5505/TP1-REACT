@@ -4,8 +4,8 @@ import ItemCard from '../item/ItemCard'
 export default function List({ items, editItem, deleteItem, filterType, emptyMessage, sortType }) {
   
   const filteredItems = items.filter(item => {
-    if (filterType === 'watched') return item.watched === true;
-    if (filterType === 'towatch') return item.watched === false;
+    if (filterType === 'watched') return item.watched === true
+    if (filterType === 'towatch') return item.watched === false
     return true;
   });
 
@@ -22,7 +22,7 @@ export default function List({ items, editItem, deleteItem, filterType, emptyMes
         return sortedArray
     }
   // Mensaje 
-  const emptyMessageToShow = emptyMessage || `No hay películas en esta sección`;
+  const emptyMessageToShow = emptyMessage || `No hay películas en esta sección`
 
   const itemsToShow = sortedFilteredItems(sortType)
   return (
